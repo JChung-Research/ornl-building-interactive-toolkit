@@ -1,0 +1,151 @@
+// Copyright 2026 UT-Battelle, LLC
+// SPDX-License-Identifier: Apache-2.0
+
+.home {
+  padding-top: 0rem;
+  & h1 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.update-all-units {
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+/* Card around the whole tabs block */
+.campus-tabs {
+  padding: 12px 12px;
+}
+
+.bp3-tab-list {
+  padding: 12px 12px;
+}
+
+/* Make the tab bar sticky and scrollable when many campuses */
+.campus-tabs .bp5-tab-list {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--pt-app-background-color, #fff);
+  border-bottom: 1px solid rgba(16, 22, 26, 0.15);
+  padding: 6px 4px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.bp3-tab-panel {
+  margin-top: 4px;
+}
+
+/* Nicer tab titles */
+.campus-tab-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.campus-tab-title .campus-tab-text {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Subtle panel padding */
+.campus-panel {
+  padding: 6px;
+}
+
+/* Sleeker tab indicator */
+.campus-tabs .bp5-tab-indicator {
+  height: 2px;
+  background: currentColor;
+}
+
+/* Optional: vertical tabs on very wide screens */
+@media (min-width: 1400px) {
+  .campus-tabs .bp5-tabs {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 8px;
+  }
+  .campus-tabs .bp5-tab-list {
+    position: static;
+    border-right: 1px solid rgba(16, 22, 26, 0.15);
+    border-bottom: none;
+    overflow-x: visible;
+    white-space: normal;
+  }
+}
+
+.quick-range {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 4px 15px;
+}
+
+.quick-range__btn {
+  appearance: none;
+  border: 1px solid #d0d7de;
+  background: #f6f8fa;
+  color: #24292f;
+  border-radius: 8px;
+  padding: 2px 3px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  height: 32px;
+  cursor: pointer;
+  transition: background .15s ease, box-shadow .15s ease, transform .02s ease;
+}
+
+.quick-range__btn:hover {
+  background: #eef1f4;
+}
+
+.quick-range__btn:focus {
+  outline: 2px solid #00783340;
+  outline-offset: 2px;
+}
+
+.quick-range__btn:active {
+  transform: translateY(1px);
+}
+
+.quick-range__btn.is-active {
+  background: #007833;
+  border-color: #007833;
+  color: #fff;
+  box-shadow: 0 2px 6px #00783340;
+}
+
+.bldg-image, .unit-image {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.help-icon-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  border: 1.5px solid rgba(92, 112, 128, 0.4);   // BP gray-3 @ 40%
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  color: rgba(92, 112, 128, 0.7);
+  cursor: help;
+  user-select: none;
+  vertical-align: middle;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    border-color: rgba(45, 114, 210, 0.6);         // BP blue @ 60%
+    color: rgba(45, 114, 210, 0.85);
+    background-color: rgba(45, 114, 210, 0.06);
+  }
+}

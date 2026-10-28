@@ -1,0 +1,65 @@
+# Copyright 2026 UT-Battelle, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+name: volttron
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    restart: unless-stopped
+    environment:
+      INFLUXDB_DB: building3147
+      INFLUXDB_ADMIN_USER: admin
+      INFLUXDB_ADMIN_PASSWORD: admin
+    volumes:
+      - ./influxdb-data:/var/lib/influxdb
+    expose:
+      - "8086"
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui  # see below
+    image: orbit-ui:latest
+    depends_on:
+      - influxdb
+    restart: unless-stopped
+    environment:
+      HISTORIAN_ENABLE: "true"
+      UI_PORT: "8443"                       # web UI (HTTPS) port read by ui_gateway.py
+      INFLUXDB_DBS:
+      INFLUXDB_HOST: "influxdb"             # default / fallback host
+      INFLUXDB_DB_HOSTS:
+      INFLUXDB_ADMIN_USER: "admin"
+      INFLUXDB_ADMIN_PASSWORD: "admin"
+      # INFLUXDB_HOST_2: "localhost"
+      # INFLUXDB_ADMIN_USER_2: admin
+      # INFLUXDB_ADMIN_PASSWORD_2: admin
+    volumes:
+      - ./certs:/certs           # mount real certs if you have them
+    expose:
+      - "5100"                   # internal-only
+    ports:
+      - "8443:8443"                           # web UI (HTTPS); host:container, must match UI_PORT
+
+  # Device servers (ecobee, eGauge, Schneider, modbus) now live in
+  # ../device-servers/docker-compose.yml and are merged in via the root
+  # docker-compose.yml, so they share this project's network -- volttron
+  # still reaches them by name (http://ecobee:5005, etc.).
+
+  middleware:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./start.sh:/usr/local/bin/start.sh
+    command: ["bash", "/usr/local/bin/start.sh"]
+    expose:
+      - "5000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/ping >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 60s

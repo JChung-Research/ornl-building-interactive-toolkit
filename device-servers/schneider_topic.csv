@@ -1,0 +1,13 @@
+name,object_type,instance,property,writable,notes
+room_temperature,analogValue,100,presentValue,ro,Room Temperature
+room_humidity,analogValue,103,presentValue,ro,Room Humidity
+co2_level,analogValue,106,presentValue,ro,CO2 Level
+occupied_heat_setpoint,analogValue,39,presentValue,rw,Occupied Heat Setpoint
+occupied_cool_setpoint,analogValue,40,presentValue,rw,Occupied Cool Setpoint
+standby_heat_setpoint,analogValue,41,presentValue,rw,Standby Heat Setpoint
+standby_cool_setpoint,analogValue,42,presentValue,rw,Standby Cool Setpoint
+unoccupied_heat_setpoint,analogValue,43,presentValue,rw,Unoccupied Heat Setpoint
+unoccupied_cool_setpoint,analogValue,44,presentValue,rw,Unoccupied Cool Setpoint
+system_mode,multiStateValue,16,presentValue,rw,"1=Off,2=Auto,3=Cool,4=Heat"
+fan_mode,multiStateValue,17,presentValue,rw,"1=On,2=Auto,3=Smart"
+setpoint_function,multiStateValue,58,presentValue,yes

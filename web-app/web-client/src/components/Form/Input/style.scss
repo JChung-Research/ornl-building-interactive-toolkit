@@ -1,0 +1,24 @@
+// Modifications Copyright 2026 UT-Battelle, LLC
+// SPDX-License-Identifier: Apache-2.0
+
+@import "~@blueprintjs/core/lib/scss/variables";
+.single-input {
+    line-height: 32px;
+    margin-bottom: 0;
+    input {
+        height: 3rem;
+    }
+    label {
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .helperText {
+        font-size: small;
+    }
+    .red {
+        color: $pt-intent-danger;
+    }
+    .grey {
+        color: grey;
+    }
+}

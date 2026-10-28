@@ -1,0 +1,42 @@
+index,name
+131072,voltage l1
+131073,voltage l2
+131074,voltage l3
+196608,sensor s3
+196609,sensor s2
+196610,sensor s1
+327680,frequency l1
+327681,frequency l2
+327682,frequency l3
+327683,frequency s3
+327684,frequency s2
+327685,frequency s1
+393216,timestamp
+458752,oldval usage
+458753,oldval l1 voltage
+458754,oldval l2 voltage
+458755,oldval l3 voltage
+458756,oldval internal temperature
+458758,oldval internal humidity
+524288,oldchg usage
+524289,oldchg l1 votage
+524290,oldchg l2 votage
+524291,oldchg l3 votage
+524292,oldchg internal temperature
+524294,oldchg internal humidity
+589824,mean voltage l1
+589825,mean voltage l2
+589826,mean voltage l3
+655360,mean sensor s3
+655361,mean sensor s2
+655262,mean sensor s1
+720897,regval l1 voltage
+720898,regval l2 voltage
+720899,regval l3 voltage
+720900,regval internal temperature
+720901,regval internal humidity
+786433,regchg l1 voltage
+786434,regchg l2 voltage
+786435,regchg l3 voltage
+786436,regchg internal temperature
+786437,regchg internal humidity

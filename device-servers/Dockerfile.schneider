@@ -1,0 +1,32 @@
+# Copyright 2026 UT-Battelle, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+FROM python:3.11-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     ca-certificates && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Minimal deps for this service
+RUN pip install --no-cache-dir \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    flask flask-restful pandas bacpypes3
+
+# Copy service and mapping file into the image
+COPY server_schneider.py /app/
+COPY schneider_topic.csv /app/
+COPY schneider_device.csv /app/
+
+# Useful runtime envs (optional)
+ENV LOCAL_ADDRESS="0.0.0.0:47808"
+ENV DEVICE_ADDRESS="0.0.0.0:47808"
+
+# REST (Flask) and BACnet/IP
+EXPOSE 5004/tcp
+EXPOSE 47808/udp
+
+# CMD ["python", "server_schneider.py", "--server", "--activate-set-point", "--activate-get-point"]
+CMD ["python", "server_schneider.py", "--server"]

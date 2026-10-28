@@ -1,0 +1,50 @@
+// Copyright 2026 UT-Battelle, LLC
+// SPDX-License-Identifier: Apache-2.0
+
+import { Button, InputGroup, Intent, Label } from "@blueprintjs/core";
+
+import { IOccupancy } from "controllers/occupancies/action";
+import { IUnit } from "controllers/units/action";
+import { IconNames } from "@blueprintjs/icons";
+import moment from "moment";
+import { DeepPartial } from "../../utils/types";
+
+export function Occupancy(props: {
+  path: string;
+  unit: DeepPartial<IUnit> | IUnit;
+  editing: DeepPartial<IUnit> | null;
+  occupancy: DeepPartial<IOccupancy>;
+  handleChange: (field: string, unit?: DeepPartial<IUnit> | null) => (value: any) => void;
+  readOnly?: boolean;
+}) {
+  const { path, editing, occupancy, handleChange, readOnly } = props;
+  const { id, label, date, schedule } = occupancy;
+
+  const suffix = schedule?.label;
+  const desc = `${moment(date).format("dddd MMMM Do YYYY")} ${suffix && `(${suffix})`}`;
+  const disable = moment(date).startOf("day").isBefore(moment().startOf("day"), "day");
+
+  return (
+    <>
+      <div className="row custom-holi-occ-list">
+        <div>
+          <Label disabled={disable}>
+            <b>{label}</b>
+            <InputGroup type="text" value={desc} disabled={disable} readOnly className="custom-holi-occ-text" />
+          </Label>
+        </div>
+        <div>
+          <Button
+            icon={IconNames.TRASH}
+            intent={Intent.WARNING}
+            minimal
+            onClick={() => {
+              handleChange(path, editing)({ id: id, action: "delete" });
+            }}
+            disabled={readOnly}
+          />
+        </div>
+      </div>
+    </>
+  );
+}

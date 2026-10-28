@@ -1,0 +1,207 @@
+services:
+
+  # Proxy that can be configured for HTTP or HTTPS
+  proxy:
+    command:
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certresolver=${CERT_RESOLVER}
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=${ADMIN_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/etc/certs/letsencrypt.json
+    container_name: ${COMPOSE_PROJECT_NAME}-proxy
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    hostname: proxy
+    image: traefik:v2.10
+    labels:
+      - traefik.tls.stores.default.defaultgeneratedcert.resolver=${CERT_RESOLVER}
+      - traefik.tls.stores.default.defaultgeneratedcert.domain.main=${HOSTNAME}
+      - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=*.${HOSTNAME}
+    ports:
+      - 81:80
+      - 443:443
+      - ${TRAEFIK_PORT}:8080
+    profiles:
+      - proxy
+    restart: unless-stopped
+    user: root:root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs/:/etc/certs/:ro
+      - ./proxy/certs-traefik.yml:/etc/traefik/dynamic/certs-traefik.yml
+
+  # # Application that hosts static files and API
+  app:
+    build:
+      context: ../web-server
+      dockerfile: ./Dockerfile
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - NO_PROXY=${NO_PROXY}
+        - NODE_TLS_REJECT_UNAUTHORIZED=${NODE_TLS_REJECT_UNAUTHORIZED}
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      database:
+        condition: service_started
+    env_file:
+      - .env.app
+    healthcheck:
+      test: "curl --fail http://localhost:3000 || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    hostname: app
+    image: nextapp:${TAG}
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.nextapp.loadbalancer.server.port=3000
+      - traefik.http.middlewares.app-security.headers.browserXssFilter=true
+      - traefik.http.middlewares.app-security.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.app-security.headers.forceSTSHeader=true
+      - traefik.http.middlewares.app-security.headers.frameDeny=true
+      - traefik.http.middlewares.app-security.headers.referrerPolicy=same-origin
+      - traefik.http.middlewares.app-security.headers.sslRedirect=true
+      - traefik.http.middlewares.app-security.headers.stsSeconds=31536000
+      - traefik.http.routers.app-http.entrypoints=web
+      - traefik.http.routers.app-http.rule=Host(`${HOSTNAME}`)
+      - traefik.http.routers.app-http.middlewares=app-https
+      - traefik.http.middlewares.app-https.redirectscheme.scheme=https
+      - traefik.http.routers.app.entrypoints=websecure
+      - traefik.http.routers.app.rule=Host(`${HOSTNAME}`)
+      - traefik.http.routers.app.middlewares=app-security
+      - traefik.http.routers.app.tls=true
+      - traefik.http.routers.app.tls.certresolver=${CERT_RESOLVER}
+    ports:
+      - ${APP_PORT}:3000
+    restart: unless-stopped
+    volumes:
+      - app-data:/app/data
+      - app-cache:/app/.next/cache
+      - app-upload:/app/upload/
+
+  # Runs application services
+  services:
+    build:
+      context: ../web-server
+      dockerfile: ./Dockerfile
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - NO_PROXY=${NO_PROXY}
+        - NODE_TLS_REJECT_UNAUTHORIZED=${NODE_TLS_REJECT_UNAUTHORIZED}
+    container_name: ${COMPOSE_PROJECT_NAME}-services
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      database:
+        condition: service_started
+    env_file:
+      - .env.services
+    healthcheck:
+      test: "curl http://localhost:3000/api/graphql"
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    hostname: services
+    image: nextapp:${TAG}
+    restart: unless-stopped
+    volumes:
+      - app-data:/app/data
+      - app-upload:/app/upload/
+      - ./certs/:/etc/certs/:ro
+      - ./init/:/app/seed/:ro
+      - ../configs/:/app/configs/:ro
+
+  # Creates self-signed TLS certs for localhost and domain and runs relational database migrations on startup
+  init:
+    build:
+      context: ../web-server
+      dockerfile: ./Dockerfile.init
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - NO_PROXY=${NO_PROXY}
+        - NODE_TLS_REJECT_UNAUTHORIZED=${NODE_TLS_REJECT_UNAUTHORIZED}
+    command: 
+      bash -c '
+        if [ ! -f /etc/certs/mkcert-ca.crt ]; then
+          mkcert create-ca \
+            --key "/etc/certs/mkcert-ca.key" \
+            --cert "/etc/certs/mkcert-ca.crt"
+        fi;
+        if [ ! -f /etc/certs/mkcert-hostname.crt ]; then
+          mkcert create-cert \
+            --ca-key "/etc/certs/mkcert-ca.key" \
+            --ca-cert "/etc/certs/mkcert-ca.crt" \
+            --key "/etc/certs/mkcert-hostname.key" \
+            --cert "/etc/certs/mkcert-hostname.crt" \
+            --domain "${HOSTNAME}"
+        fi;
+        cd /app/;
+        chmod 775 data upload;
+        chmod 664 /etc/certs/mkcert-ca.crt;
+        chmod -R 775 ./lib;
+        yarn migrate:deploy;
+      '
+    container_name: ${COMPOSE_PROJECT_NAME}-init
+    depends_on:
+      database:
+        condition: service_healthy
+    env_file:
+      - .env.init
+    hostname: init
+    image: init:${TAG}
+    user: root:root
+    volumes:
+      - app-data:/app/data/
+      - app-upload:/app/upload
+      - ./certs/:/etc/certs/
+      - ./init/:/app/seed/:ro
+
+  # Application relational database
+  database:
+    cap_add:
+      - SYS_NICE
+    container_name: ${COMPOSE_PROJECT_NAME}-database
+    env_file:
+      - .env.database
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    hostname: database
+    image: postgis/postgis:16-3.5-alpine
+    ports:
+      - ${DATABASE_PORT}:5432
+    restart: unless-stopped
+    volumes:
+      - database-data:/var/lib/postgresql/data
+
+  # Redis
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    hostname: redis
+    image: redis:6.2
+    restart: unless-stopped
+
+volumes:
+  app-data:
+    driver: local
+  app-cache:
+    driver: local
+  app-upload:
+    driver: local
+  database-data:
+    driver: local

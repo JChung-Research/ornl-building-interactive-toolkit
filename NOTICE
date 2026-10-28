@@ -1,0 +1,26 @@
+NOTICE
+============================================================================
+
+
+Upstream — Pacific Northwest National Laboratory (PNNL)
+----------------------------------------------------------------------------
+This product includes software originally developed at Pacific Northwest National Laboratory, operated by Battelle Memorial Institute for the U.S. Department of Energy under Contract DE-AC05-76RL01830.
+
+Portions Copyright Battelle Memorial Institute. Licensed under the Apache License, Version 2.0. Derived from PNNL's [`volttron-pnnl-aems`](https://github.com/VOLTTRON/volttron-pnnl-aems).
+
+See the DISCLAIMER file for the PNNL / Battelle U.S. Government disclaimer.
+
+Modifications and additions — Oak Ridge National Laboratory (ORNL)
+----------------------------------------------------------------------------
+Modifications and additional components Copyright 2026 UT-Battelle, LLC.
+
+This work was produced under the auspices of the U.S. Department of Energy by Oak Ridge National Laboratory under Contract DE-AC05-00OR22725.
+
+This work was prepared as an account of work sponsored by an agency of the United States Government. Neither the United States Government nor UT-Battelle, LLC, nor any of their employees makes any warranty, expressed or implied, or
+assumes any legal liability or responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed, or represents that its use would not infringe privately owned rights.
+
+Reference herein to any specific commercial product, process, or service by trade name, trademark, manufacturer, or otherwise does not necessarily constitute or imply its endorsement, recommendation, or favoring by the United States Government or UT-Battelle, LLC.
+
+The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or UT-Battelle, LLC, and shall not be used for advertising or product endorsement purposes.
+
+ORNL software registration: ORNL-CODE-004110

@@ -1,0 +1,87 @@
+{
+  "table": "User",
+  "type": "upsert",
+  "id": "id",
+  "data": [
+    {
+      "id": "1",
+      "name": "admin",
+      "email": "admin@example.com",
+      "password": "changeme",
+      "role": "admin",
+      "preferences": {},
+      "bldgAccess": {},
+      "readOnly": false
+    },
+    {
+      "id": "2",
+      "name": "manager-a",
+      "email": "manager-a@example.com",
+      "password": "changeme",
+      "role": "manager",
+      "preferences": {},
+      "bldgAccess": {"Building-A": ["all"]},
+      "readOnly": false
+    },
+    {
+      "id": "3",
+      "name": "manager-b",
+      "email": "manager-b@example.com",
+      "password": "changeme",
+      "role": "manager",
+      "preferences": {},
+      "bldgAccess": {"Building-B": ["all"]},
+      "readOnly": false
+    },
+    {
+      "id": "4",
+      "name": "user-a1",
+      "email": "user-a1@example.com",
+      "password": "changeme",
+      "role": "user",
+      "preferences": {},
+      "bldgAccess": {"Building-A": ["Zone-1"]},
+      "readOnly": false
+    },
+    {
+      "id": "5",
+      "name": "user-b1",
+      "email": "user-b1@example.com",
+      "password": "changeme",
+      "role": "user",
+      "preferences": {},
+      "bldgAccess": {"Building-B": ["Zone-1"]},
+      "readOnly": false
+    },
+    {
+      "id": "6",
+      "name": "user-a2",
+      "email": "user-a2@example.com",
+      "password": "changeme",
+      "role": "user",
+      "preferences": {},
+      "bldgAccess": {"Building-A": ["Zone-2"]},
+      "readOnly": false
+    },
+    {
+      "id": "7",
+      "name": "visitor",
+      "email": "visitor@example.com",
+      "password": "changeme",
+      "role": "user",
+      "preferences": {},
+      "bldgAccess": {"Building-A": ["all"], "Building-B": ["all"]},
+      "readOnly": true
+    },
+    {
+      "id": "8",
+      "name": "demo-bestest",
+      "email": "demo-bestest@example.com",
+      "password": "changeme",
+      "role": "user",
+      "preferences": {},
+      "bldgAccess": {"BESTEST-Air": ["all"]},
+      "readOnly": false
+    }
+  ]
+}

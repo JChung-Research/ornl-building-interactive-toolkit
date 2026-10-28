@@ -1,0 +1,1000 @@
+// Modifications Copyright 2026 UT-Battelle, LLC
+// SPDX-License-Identifier: Apache-2.0
+
+.home {
+  padding-top: 0rem;
+  & h1 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* === Harmonized dark theme tokens === */
+/* === Fonts (Direction B) === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+/* === Direction B · Modern Dashboard tokens === */
+:root {
+  /* Surfaces */
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-glass: linear-gradient(180deg, #FAFBFC 0%, #FFFFFF 60%);
+  --surface-subtle: #F8FAFC;
+  --surface-2: #F1F5F9;
+
+  /* Borders */
+  --border: #D4E0E2;
+  --border-strong: #B6BEDE;
+  --border-subtle: #DDE0E4;
+
+  /* Text */
+  --text: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #64748B;
+  --muted: #64748B;
+
+  /* Brand */
+  --accent: #007833;
+  --accent-hover: #006128;
+  --accent-tint: rgba(0, 120, 51, 0.08);
+  --accent-tint-2: rgba(0, 120, 51, 0.12);
+  --accent-glow: rgba(0, 120, 51, 0.15);
+  --accent-gradient: linear-gradient(135deg, #007833 0%, #00A346 100%);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(15,23,42,0.16);
+  --shadow-1:  0 1px 2px rgba(15,23,42,0.16);               /* alias for backward compat */
+  --shadow-md: 0 4px 6px -1px rgba(15,23,42,0.2), 0 2px 4px -1px rgba(15,23,42,0.16);
+  --shadow-2:  0 10px 20px -6px rgba(15,23,42,0.32), 0 4px 8px -4px rgba(15,23,42,0.16); /* alias */
+  --shadow-lg: 0 10px 20px -6px rgba(15,23,42,0.32), 0 4px 8px -4px rgba(15,23,42,0.16);
+
+  /* Radius */
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+
+  /* Focus / rings */
+  --ring: #007833;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+}
+
+/* Apply Inter globally on the campus explorer (doesn't leak outside) */
+.campus-explorer,
+.campus-explorer button,
+.campus-explorer input,
+.campus-explorer textarea {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
+}
+
+/* Page wrapper */
+.campus-explorer { background: var(--bg); color: var(--text); }
+
+/* Header */
+/* === Header (Direction B) === */
+.campus-header {
+  background: var(--bg);
+  // border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.campus-header__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+}
+
+.campus-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.campus-header__brand-mark {
+  width: 47px;
+  height: 47px;
+  border-radius: 10px;
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 10px -2px rgba(0,120,51,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+  flex-shrink: 0;
+  overflow: hidden;           /* clip anything past the rounded edges */
+  position: relative;
+}
+
+.campus-header__brand-mark img {
+  width: 140%;                /* overflow the tile */
+  height: 140%;
+  object-fit: cover;          /* fill, crop — no squishing */
+  object-position: center;
+  display: block;
+}
+
+.campus-header__title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.campus-header__title h1 {
+  margin: 0;
+  padding: 0;
+  padding-left: 5px !important;
+  font-size: clamp(22px, 2vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.campus-header__subtitle {
+  margin: 0;
+  margin-left: 5px;
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* Status pills on the right side of the header */
+.campus-header__stats {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  padding: 7px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 80px;
+  line-height: 1;
+}
+
+.stat-pill__label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.stat-pill__value {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+}
+
+.stat-pill--online .stat-pill__value::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  display: inline-block;
+  margin-right: 6px;
+}
+
+@media (max-width: 860px) {
+  .campus-header__inner { grid-template-columns: 1fr; }
+  .campus-header__stats { justify-content: flex-start; flex-wrap: wrap; }
+}
+
+/* Campus chips (pills) */
+.chip {
+  padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border);
+  background: transparent; color: var(--text); font-size: .75rem; line-height: 1;
+  cursor: pointer; transition: background .15s ease, border-color .15s ease, transform .06s ease;
+}
+.chip:hover { background: rgba(255,255,255,.06); }
+.chip:active { transform: translateY(1px); }
+.chip.is-active, .chip[aria-current="page"] {
+  border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.08);
+}
+
+/* Main layout */
+.campus-main {
+  // max-width: 1200px; margin: 0 auto; padding: 16px;
+  // display: grid; grid-template-columns: 3fr 4fr; gap: 16px;
+  display: flex !important; margin: 0 auto; padding: 16px; padding-top: 0; gap: 16px; align-items: flex-start;
+}
+
+.campus-left {
+  flex: 0 1 42.8%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                       /* vertical space between map & description */
+}
+
+// @media (max-width: 1000px) { .campus-main { grid-template-columns: 1fr; } .campus-sidebar { order:-1; } }
+@media (max-width: 1000px) {
+  .campus-main { flex-direction: column; gap: 12px; }
+  .campus-left, .campus-sidebar { flex: none; width: 100%; }
+  .campus-left .panel.panel--map,
+  .campus-left .panel.panel--description {
+    border-radius: var(--radius-lg);  /* restore rounded corners on mobile */
+    border-top: 1px solid var(--border);
+  }
+  .campus-left .panel.panel--map { margin-bottom: 8px; }
+}
+
+/* Panels */
+/* === Panels · Direction B === */
+.panel {
+  position: relative;
+  background: var(--surface-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Subtle green hairline across the top of every panel */
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,120,51,0.28), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Modifiers only control layout flow now — padding lives on header/body */
+.panel--map,
+.panel--summary,
+.panel--list,
+.panel--description {
+  padding: 0;
+  gap: 0;
+}
+
+/* Panel header: icon-box + title-group + count badge */
+.panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.6);
+  border-bottom: 1px solid var(--border);
+  min-height: 52px;
+}
+
+.panel__title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.panel__icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--accent-tint);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.panel__icon-box svg {
+  width: 21px;
+  height: 21px;
+}
+
+.panel__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.panel__eyebrow {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  line-height: 1.2;
+}
+
+/* Overrides your existing .panel__title — DO NOT keep the old 2rem rule */
+.panel__title {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.panel__count-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-tint);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Panel body — where maps, grids, descriptions live */
+.panel__body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Campus Description panel is special: no header, image goes full-bleed */
+.panel--description .panel__body {
+  padding: 0;
+}
+.panel--description .panel__body > .campus-frame {
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+}
+.panel--description .panel__body > .campus-text {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Campus description — inner typography */
+.campus-text__title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.campus-text__dot {
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.campus-text__name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.campus-text__loc {
+  margin-left: auto;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-tint);
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.campus-text__desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Left column (row 1): map */
+.campus-left .panel.panel--map,
+.campus-left .panel.panel--description {
+  margin: 0;
+}
+
+/* Right column (row 1): sidebar */
+.campus-sidebar {
+  flex: 0 1 57.2%;
+  min-width: 0;
+  position: sticky;          /* optional: keep visible */
+  top: 16px;
+}
+
+/* Ensure panels inside the sidebar fill the column */
+.campus-sidebar > .panel { width: 100%; }
+
+/* Map frame */
+/* === Site Map frame · Direction B === */
+.map-frame {
+  position: relative;
+  aspect-ratio: 12/7;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #0b1424cb;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(180deg, #0b142450, #0F1E3350);
+  background-size: 32px 32px, 32px 32px, 100%;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Make the SchematicMap's internal dark <rect> invisible so the new grid shows through */
+.map-frame svg > rect:first-of-type {
+  fill: transparent !important;
+  opacity: 0 !important;
+}
+
+/* Legend strip that appears BELOW the map frame, inside the panel body */
+.map-legend {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 2px 2px 0;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.map-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+}
+
+.map-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.map-legend__spacer {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+}
+
+/* === Campus frame · Direction B === */
+.campus-frame {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Soften the dark overlay so the satellite underneath is more readable */
+.campus-frame__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.45) 0%,
+    rgba(15, 23, 42, 0.35) 40%,
+    rgba(15, 23, 42, 0.55) 100%
+  );
+  pointer-events: none;
+}
+
+/* Scale bar (bottom-right) */
+.campus-frame__scale {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.campus-frame__scale::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.campus-map {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.campus-map__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem; // optional, to match your UI
+}
+
+/* Clickable building marker */
+/* === Building markers · Direction B === */
+.campus-map__marker {
+  position: absolute;
+  transform: translate(-50%, -50%);  /* anchor at center, not bottom */
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  z-index: 2;
+}
+
+/* Dot with pulsing green glow */
+.campus-map__marker-dot {
+  position: relative;
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background: var(--accent);  /* overridden inline for per-campus color */
+  box-shadow: 0 0 0 4px rgba(0, 120, 51, 0.4);
+  animation: marker-pulse 2.5s ease-in-out infinite;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    filter 150ms ease;
+}
+
+@keyframes marker-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(0, 120, 51, 0.4); }
+  50%      { box-shadow: 0 0 0 9px rgba(0, 120, 51, 0.1); }
+}
+
+/* Building-code tag — appears to the right of the dot on hover/active */
+.campus-map__marker::after {
+  content: attr(data-code);
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  padding: 3px 8px;
+  background: #ffffff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(15, 23, 42, 0.06);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.campus-map__marker:hover::after,
+.campus-map__marker--active::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(2px);
+}
+
+/* Active marker (hovered from building card) */
+.campus-map__marker--active { z-index: 4; }
+.campus-map__marker--active .campus-map__marker-dot {
+  transform: scale(1.25);
+  animation: none;
+  box-shadow:
+    0 0 0 5px rgba(0, 120, 51, 0.25),
+    0 0 0 10px rgba(0, 120, 51, 0.1);
+  filter: brightness(1.1);
+}
+
+/* Building grid/cards */
+/* === Building grid · Direction B === */
+.building-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+@media (max-width: 520px) {
+  .building-grid { grid-template-columns: 1fr; }
+}
+
+/* --- Card shell --- */
+.building-card {
+  position: relative;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.building-card:hover,
+.building-card--hovered {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --- Image with title overlay --- */
+.building-card__img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.building-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 300ms ease;
+}
+
+.building-card:hover .building-card__img img {
+  transform: scale(1.03);
+}
+
+/* Dark gradient so the title reads over any photo */
+.building-card__img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0) 40%,
+    rgba(15, 23, 42, 0.75) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Title sits ON the image, anchored bottom-left */
+.building-card__title {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  right: 60px;                 /* keep clear of the metric badges on the right */
+  z-index: 2;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  /* Clamp to 2 lines so long names don't push the badges */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- Metric chips (top-right of the image) --- */
+.building-card__metrics {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: flex;
+  gap: 4px;
+}
+
+.building-card__metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--text);
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.building-card__metric--live {
+  background: rgba(0, 120, 51, 0.95);
+  color: #ffffff;
+}
+
+.building-card__metric--live::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: card-live-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes card-live-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+/* --- Body --- */
+.building-card__body {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.building-card__body p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 10px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Footer row: left = tiny meta chips, right = Open link */
+.building-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  gap: 8px;
+}
+
+.building-card__meta {
+  display: flex;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.building-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.building-card__meta-item svg {
+  width: 11px;
+  height: 11px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* Open link */
+.building-card__open {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0;
+  transition: color 120ms ease;
+  font-family: var(--font-sans);
+  background: none;
+  border: none;
+}
+
+.building-card__open:hover {
+  color: var(--accent-hover);
+  text-decoration: none;
+}
+/* Focus rings */
+.chip:focus-visible, .building-card:focus-visible, .panel:focus-visible, .map-frame:focus-visible {
+  outline: 2px solid var(--ring); outline-offset: 2px; border-color: var(--ring);
+}
+
+/* Subtle scrollbar for lists */
+.building-grid::-webkit-scrollbar { height: 8px; width: 8px; }
+.building-grid::-webkit-scrollbar-thumb { background:#1f2937; border-radius:999px; }
+.building-grid::-webkit-scrollbar-track { background:transparent; }
+
+/* === Tabs · Direction B pill group (overrides Bootstrap nav-tabs) === */
+/* === Tabs · Direction B (underline style preserved, updated font + color) === */
+.nav.nav-tabs {
+  display: flex !important;
+  gap: 4px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border) !important;
+  margin: 0 0 16px !important;
+}
+
+.nav.nav-tabs .nav-item {
+  margin-bottom: -1px !important;
+}
+
+.nav.nav-tabs .nav-link {
+  padding: 10px 16px !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  font-family: var(--font-sans);
+  font-size: 14px !important;
+  font-weight: 500;
+  color: var(--text-tertiary) !important;
+  cursor: pointer;
+  border-radius: 0 !important;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  line-height: 1.4 !important;
+}
+
+.nav.nav-tabs .nav-link:hover {
+  color: var(--text) !important;
+  border-bottom-color: var(--border-strong) !important;
+}
+
+.nav.nav-tabs .nav-link.active,
+#real-sim-tab.active {
+  color: var(--text) !important;
+  font-weight: 600;
+  border-bottom: 4px solid var(--accent) !important;
+  background: transparent !important;
+}
+
+#real-sim-tab { font-size: 16px !important; }
+#real-sim-tab.inactive { color: var(--text-tertiary) !important; }
+
+.campus-chat {
+  margin: 12px 0;
+
+  &__header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__toggle {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0b1220;
+    color: #e2e8f0;
+    cursor: pointer;
+  }
+
+  &__panel {
+    margin-top: 10px;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    background: #0b1220;
+    padding: 12px;
+  }
+
+  &__history {
+    max-height: 220px;
+    overflow: auto;
+    padding: 6px;
+  }
+
+  &__empty {
+    color: #94a3b8;
+    padding: 8px;
+  }
+
+  &__msg {
+    display: flex;
+    margin: 8px 0;
+
+    &--user {
+      justify-content: flex-end;
+    }
+    &--assistant {
+      justify-content: flex-start;
+    }
+  }
+
+  &__bubble {
+    max-width: 85%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #111827;
+    color: #e5e7eb;
+    border: 1px solid #1f2937;
+    white-space: pre-wrap;
+  }
+
+  &__msg--user &__bubble {
+    background: #1f2937;
+    border-color: #334155;
+  }
+
+  &__composer {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: flex-end;
+  }
+
+  &__input {
+    flex: 1;
+    resize: vertical;
+    min-height: 44px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: #e2e8f0;
+  }
+
+  &__send {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #007833;
+    background: #00783340;
+    color: #e2e8f0;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .llm-input {
+    height: 100px;
+  }
+}

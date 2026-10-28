@@ -1,0 +1,26 @@
+# Copyright 2026 UT-Battelle, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+# Top-level ORBIT stack.
+#
+# `include` merges the component Compose files into ONE project sharing ONE
+# default network, so service-name DNS works across them -- e.g. the volttron
+# (middleware) containers reach the device servers by name
+# at http://ecobee:5005, http://egauge:5006, http://schneider:5004. Each included
+# file keeps its own directory as the base for relative build contexts/volumes.
+#
+# Requires Docker Compose v2.20+ (the `include` directive).
+#
+#   docker compose build      # build all images
+#   docker compose up -d      # run the whole stack
+
+
+name: orbit
+
+include:
+  - middleware/docker-compose.yml
+  - device-servers/docker-compose.yml
+  # Web application (frontend + API). Its own include-wrapper around docker/;
+  # needs web-app/.env (from web-app/.env.example) to run -- COMPOSE_PROJECT_NAME,
+  # DB password, COMPOSE_PROFILES, etc.
+  - web-app/docker-compose.yml

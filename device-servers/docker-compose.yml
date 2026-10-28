@@ -1,0 +1,64 @@
+# Copyright 2026 UT-Battelle, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+# Device-server stack: ecobee thermostat, eGauge meter, Schneider meter (+ modbus).
+#
+# These services are normally launched together with the rest of the platform
+# via the repository-root docker-compose.yml (which `include`s this file), so
+# they share one Compose project and network -- the volttron containers
+# reach them by service name (e.g. http://ecobee:5005). They can also be built
+# and run on their own: `docker compose up` from this folder.
+
+services:
+  ecobee:
+    build:
+      context: .
+      dockerfile: Dockerfile.ecobee
+    image: orbit-ecobee:latest
+    restart: unless-stopped
+    # expose:
+    #   - "5005"                  # internal-only
+    ports:
+      - "5005:5005"
+
+  modbus:
+    build:
+      context: .
+      dockerfile: Dockerfile.modbus
+    image: orbit-modbus:latest
+    restart: unless-stopped
+    expose:
+      - "5008"                  # internal-only
+
+  egauge:
+    build:
+      context: .
+      dockerfile: Dockerfile.egauge
+    image: orbit-egauge:latest
+    restart: unless-stopped
+    ports:
+      - "5006:5006"
+      # - "47808:47808/udp"
+    volumes:
+      - ./egauge_topic.csv:/app/egauge_topic.csv:ro
+    environment:
+      - LOCAL_ADDRESS=0.0.0.0:47809
+      - DEVICE_ADDRESS=0.0.0.0:47808
+
+  schneider:
+    build:
+      context: .
+      dockerfile: Dockerfile.schneider
+    image: orbit-schneider:latest
+    restart: unless-stopped
+    # expose:
+    #   - "5004"
+    ports:
+      - "47808:47808/udp"
+      - "5004:5004"
+    volumes:
+      - ./schneider_topic.csv:/app/schneider_topic.csv:ro
+      - ./schneider_device.csv:/app/schneider_device.csv:ro
+    environment:
+      - LOCAL_ADDRESS=0.0.0.0:47808
+      - DEVICE_ADDRESS=0.0.0.0:47808

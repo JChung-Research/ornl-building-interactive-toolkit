@@ -1,0 +1,67 @@
+fragment CurrentFragment on User {
+  id
+  name
+  email
+  image
+  role
+  emailVerified
+  preferences
+  bldgAccess
+  readOnly
+  createdAt
+  updatedAt
+}
+
+query ReadCurrent {
+  readCurrent {
+    id
+    name
+    email
+    image
+    role
+    emailVerified
+    preferences
+    bldgAccess
+    readOnly    
+    createdAt
+    updatedAt
+  }
+}
+
+mutation CreateCurrent($create: CurrentCreateInput!) {
+  createCurrent(create: $create) {
+    id
+    name
+    email
+    image
+    role
+    emailVerified
+    preferences
+    bldgAccess
+    readOnly
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateCurrent($update: CurrentUpdateInput!) {
+  updateCurrent(update: $update) {
+    id
+    name
+    email
+    image
+    role
+    emailVerified
+    preferences
+    bldgAccess
+    readOnly
+    createdAt
+    updatedAt
+  }
+}
+
+mutation DeleteCurrent {
+  deleteCurrent {
+    id
+  }
+}

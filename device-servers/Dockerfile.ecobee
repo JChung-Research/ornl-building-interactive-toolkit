@@ -1,0 +1,21 @@
+# Copyright 2026 UT-Battelle, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+FROM python:3.11-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Minimal deps for this service
+RUN pip install --no-cache-dir \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    flask flask-restful requests
+
+WORKDIR /app
+COPY server_ecobee.py ecobee.py /app/
+
+# RUN pip install --no-cache-dir flask flask-restful requests
+EXPOSE 5005
+CMD ["python", "/app/server_ecobee.py"]
