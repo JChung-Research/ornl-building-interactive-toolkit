@@ -91,4 +91,4 @@ This project is developed at **Oak Ridge National Laboratory** in collaboration 
 ## Release
 
 - ORNL Software Registration System (SRS) number: `ORNL-CODE-004110`
-- DOE CODE DOI: `TBD`
+- DOE CODE DOI: [https://doi.org/10.11578/dc.20261028.1](https://doi.org/10.11578/dc.20261028.1)
